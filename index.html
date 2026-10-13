@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#24101f">
+  <title>For Rashhh, with love</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --night: #21101f;
+      --plum: #351a37;
+      --cream: #fff2db;
+      --muted: #d5bdc8;
+      --gold: #ffbd51;
+      --pink: #ff7caa;
+      --aqua: #55d7c5;
+      --orange: #ff795f;
+      --paper: #fff6e5;
+      --ink: #392b2a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--cream);
+      background:
+        radial-gradient(ellipse at 78% 82%, rgb(191 94 63 / 24%), transparent 35%),
+        radial-gradient(ellipse at 16% 40%, rgb(94 48 111 / 35%), transparent 38%),
+        linear-gradient(155deg, #1c101d 0%, #30142f 53%, #291522 100%);
+      font-family: "DM Sans", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgb(255 239 209 / 76%) 0 1px, transparent 2px),
+        radial-gradient(circle, rgb(255 176 205 / 72%) 0 2px, transparent 3px),
+        radial-gradient(circle, rgb(255 239 209 / 58%) 0 1px, transparent 2px);
+      background-size: 137px 163px, 229px 251px, 317px 293px;
+      background-position: 20px 31px, 90px 80px, 155px 14px;
+      opacity: .7;
+    }
+
+    button { font: inherit; }
+
+    .app {
+      width: min(100%, 580px);
+      min-height: 100svh;
+      margin: 0 auto;
+      padding: clamp(24px, 6vw, 44px) clamp(20px, 6vw, 34px) 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .scene {
+      display: none;
+      width: 100%;
+      animation: arrive .65s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .scene.active { display: block; }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--gold);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1, h2 {
+      font-family: "Baloo 2", sans-serif;
+      font-weight: 600;
+      line-height: 1.05;
+      text-align: center;
+    }
+
+    h1 { margin-bottom: 14px; font-size: clamp(2.4rem, 11vw, 4.25rem); }
+    h2 { margin-bottom: 12px; font-size: clamp(2rem, 8vw, 3rem); }
+
+    .subhead {
+      max-width: 440px;
+      margin: 0 auto 28px;
+      color: var(--muted);
+      font-size: clamp(1rem, 4vw, 1.22rem);
+      line-height: 1.55;
+      text-align: center;
+    }
+
+    .tap-hint {
+      margin: 22px 0 0;
+      color: #e7d6cb;
+      font-family: "Baloo 2", sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .primary-button {
+      display: block;
+      width: min(100%, 390px);
+      min-height: 66px;
+      margin: 27px auto 0;
+      padding: 15px 24px;
+      border: 0;
+      border-radius: 999px;
+      color: white;
+      background: linear-gradient(105deg, var(--orange), var(--gold));
+      box-shadow: 0 13px 32px rgb(255 111 95 / 22%);
+      cursor: pointer;
+      font-family: "Baloo 2", sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      transition: transform .2s ease, filter .2s ease;
+    }
+
+    .primary-button:hover { transform: translateY(-3px); filter: brightness(1.06); }
+    .primary-button:focus-visible, .balloon:focus-visible, .envelope:focus-visible { outline: 3px solid white; outline-offset: 5px; }
+
+    .music-toggle {
+      position: fixed;
+      z-index: 10;
+      top: max(14px, env(safe-area-inset-top));
+      right: max(14px, calc((100vw - 580px) / 2 + 16px));
+      display: flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 15px;
+      place-items: center;
+      border: 1px solid rgb(255 242 219 / 45%);
+      border-radius: 999px;
+      color: var(--cream);
+      background: rgb(53 26 55 / 94%);
+      box-shadow: 0 5px 18px rgb(0 0 0 / 25%);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .music-toggle:focus-visible { outline: 3px solid white; outline-offset: 4px; }
+    .music-icon { font-size: 1.35rem; line-height: 1; }
+
+    .cake-button {
+      display: grid;
+      width: 100%;
+      min-height: 350px;
+      place-items: center;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .cake {
+      position: relative;
+      width: min(84vw, 340px);
+      height: 220px;
+      margin-top: 20px;
+      border-bottom: 7px solid #f7dfaa;
+      filter: drop-shadow(0 17px 23px rgb(0 0 0 / 25%));
+    }
+
+    .cake-layer {
+      position: absolute;
+      right: 8%;
+      bottom: 8px;
+      left: 8%;
+      height: 77px;
+      border-radius: 10px 10px 14px 14px;
+      background: linear-gradient(#7b504a 0 20%, #f1c2a2 20% 27%, #633a3d 27% 100%);
+      box-shadow: inset 0 -13px 0 rgb(37 20 28 / 17%);
+    }
+
+    .cake-layer::before {
+      position: absolute;
+      top: -15px;
+      right: -2px;
+      left: -2px;
+      height: 27px;
+      border-radius: 50% 50% 10px 10px / 70% 70% 10px 10px;
+      background: #ffe9c3;
+      content: "";
+    }
+
+    .cake-layer::after {
+      position: absolute;
+      top: 2px;
+      left: 24%;
+      width: 20px;
+      height: 43px;
+      border-radius: 0 0 12px 12px;
+      background: #ffe9c3;
+      box-shadow: 102px 3px 0 -3px #ffe9c3;
+      content: "";
+    }
+
+    .candle {
+      position: absolute;
+      z-index: 1;
+      bottom: 84px;
+      left: 50%;
+      width: 13px;
+      height: 94px;
+      border-radius: 5px 5px 1px 1px;
+      background: repeating-linear-gradient(to bottom, #fff7df 0 18px, #fb9b91 18px 23px);
+      transform: translateX(-50%);
+    }
+
+    .flame {
+      position: absolute;
+      top: -28px;
+      left: 50%;
+      width: 17px;
+      height: 26px;
+      border-radius: 80% 20% 65% 35%;
+      background: #ffca4e;
+      box-shadow: 0 0 22px 8px rgb(255 153 47 / 45%);
+      transform: translateX(-50%) rotate(45deg);
+      animation: flicker .8s ease-in-out infinite alternate;
+    }
+
+    .cake-caption {
+      position: absolute;
+      right: 0;
+      bottom: -54px;
+      left: 0;
+      color: var(--gold);
+      font-family: "Caveat", cursive;
+      font-size: 2.2rem;
+      text-align: center;
+    }
+
+    .balloon-instructions { max-width: 420px; }
+
+    .balloon-field {
+      position: relative;
+      min-height: 330px;
+      margin: 14px -4px 20px;
+    }
+
+    .balloon {
+      position: absolute;
+      width: clamp(76px, 20vw, 105px);
+      height: clamp(106px, 28vw, 140px);
+      padding: 0;
+      border: 0;
+      border-radius: 52% 48% 48% 50% / 43% 44% 56% 57%;
+      box-shadow: inset 14px 10px 19px rgb(255 255 255 / 34%), inset -13px -17px 24px rgb(30 10 33 / 25%), 0 12px 24px rgb(0 0 0 / 17%);
+      cursor: pointer;
+      transition: opacity .35s ease, transform .35s ease;
+      animation: bob 3.4s ease-in-out infinite;
+    }
+
+    .balloon::before {
+      position: absolute;
+      top: 17%;
+      left: 22%;
+      width: 20%;
+      height: 27%;
+      border-radius: 50%;
+      background: rgb(255 255 255 / 48%);
+      content: "";
+      filter: blur(2px);
+    }
+
+    .balloon::after {
+      position: absolute;
+      top: 99%;
+      left: 50%;
+      width: 1px;
+      height: 75px;
+      background: rgb(255 238 222 / 57%);
+      content: "";
+    }
+
+    .balloon.popped { opacity: 0; transform: scale(.1) rotate(25deg); pointer-events: none; }
+    .balloon:nth-child(1) { top: 36%; left: 3%; background: linear-gradient(135deg, #ffb4cf, #ea5891); animation-delay: -.7s; }
+    .balloon:nth-child(2) { top: 48%; left: 24%; background: linear-gradient(135deg, #ffdf75, #e9a525); animation-delay: -1.8s; }
+    .balloon:nth-child(3) { top: 39%; left: 44%; background: linear-gradient(135deg, #d6baff, #9268df); animation-delay: -.3s; }
+    .balloon:nth-child(4) { top: 31%; left: 64%; background: linear-gradient(135deg, #8df0df, #20bfae); animation-delay: -1.2s; }
+    .balloon:nth-child(5) { top: 47%; right: 1%; background: linear-gradient(135deg, #ffb49c, #f2644a); animation-delay: -2.4s; }
+
+    .wishes { display: grid; gap: 12px; margin: 12px 0 0; padding: 0; list-style: none; }
+
+    .wish {
+      padding: 14px 17px 16px;
+      border: 1px solid color-mix(in srgb, var(--wish-color), transparent 35%);
+      border-left: 4px solid var(--wish-color);
+      border-radius: 13px;
+      background: rgb(43 21 39 / 84%);
+      box-shadow: 0 8px 25px rgb(0 0 0 / 12%);
+      animation: arrive .45s ease both;
+    }
+
+    .wish-label { display: block; margin-bottom: 7px; color: var(--wish-color); font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .wish-copy { margin: 0; font-size: 1rem; line-height: 1.4; }
+    .progress { margin: 8px 0 0; color: var(--muted); font-size: .86rem; text-align: center; }
+
+    .photo-frame {
+      position: relative;
+      width: min(100%, 520px);
+      margin: 32px auto 0;
+      padding: 13px 13px 22px;
+      border-radius: 5px;
+      background: #fff8e9;
+      box-shadow: 0 20px 50px rgb(0 0 0 / 35%);
+      transform: rotate(-2deg);
+    }
+
+    .photo-frame::before {
+      position: absolute;
+      z-index: 1;
+      top: -21px;
+      left: calc(50% - 10px);
+      width: 20px;
+      height: 43px;
+      border-radius: 6px;
+      background: #ffc758;
+      box-shadow: 0 4px 9px rgb(0 0 0 / 22%);
+      content: "";
+      transform: rotate(4deg);
+    }
+
+    .photo-frame img { display: block; width: 100%; height: auto; max-height: 68svh; border-radius: 2px; object-fit: contain; object-position: center; }
+    .photo-caption { margin: 12px 0 0; color: #503653; font-family: "Caveat", cursive; font-size: 1.8rem; text-align: center; }
+
+    .envelope {
+      position: relative;
+      display: block;
+      width: min(100%, 450px);
+      aspect-ratio: 1.35 / 1;
+      margin: 34px auto 18px;
+      overflow: hidden;
+      border: 0;
+      background: linear-gradient(145deg, #ffcb61, #e88920 65%, #c8731c);
+      box-shadow: 0 21px 40px rgb(0 0 0 / 22%);
+      cursor: pointer;
+    }
+
+    .envelope::before, .envelope::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+    }
+
+    .envelope::before {
+      background: linear-gradient(35deg, transparent 49.7%, rgb(155 90 27 / 46%) 50%, transparent 50.3%), linear-gradient(-35deg, transparent 49.7%, rgb(155 90 27 / 42%) 50%, transparent 50.3%);
+    }
+
+    .envelope::after {
+      top: 0;
+      background: linear-gradient(145deg, #ffc65d, #ef9a2e 70%);
+      clip-path: polygon(0 0, 100% 0, 50% 56%);
+      transform-origin: top;
+      transition: transform .55s ease;
+    }
+
+    .envelope.open::after { transform: rotateX(180deg); }
+
+    .seal {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      width: 76px;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 3px solid #ffe8bd;
+      border-radius: 50%;
+      color: white;
+      background: radial-gradient(circle at 35% 30%, #ffd77a, #e98e1c 70%);
+      box-shadow: 0 4px 12px rgb(109 52 4 / 30%);
+      font-family: "Baloo 2", sans-serif;
+      font-size: 2rem;
+      transform: translate(-50%, -50%);
+    }
+
+    .letter {
+      position: relative;
+      padding: clamp(24px, 7vw, 38px) clamp(20px, 7vw, 42px);
+      overflow: hidden;
+      border: 3px solid #efcf89;
+      border-radius: 9px 9px 38px 38px;
+      color: var(--ink);
+      background: repeating-linear-gradient(to bottom, var(--paper) 0 53px, #f0dfbd 54px, var(--paper) 56px);
+      box-shadow: 0 18px 45px rgb(0 0 0 / 23%);
+    }
+
+    .letter h2 { margin: 0 0 18px; color: #8d5725; font-family: "Caveat", cursive; font-size: 2.5rem; text-align: left; }
+    .letter-rule { height: 2px; margin-bottom: 21px; background: #efd3a0; }
+    .letter-copy { margin: 0; font-family: "Caveat", cursive; font-size: clamp(1.35rem, 5.6vw, 1.8rem); line-height: 1.72; }
+    .letter-word { display: inline-block; }
+    .letter-copy.animate-words .letter-word { animation: reveal-word .38s ease both; animation-delay: var(--word-delay); }
+    .letter-signoff { margin: 24px 0 0; color: #9b6331; font-family: "Caveat", cursive; font-size: 1.7rem; font-style: italic; font-weight: 700; text-align: right; }
+
+    .cake-seal {
+      display: grid;
+      width: 54px;
+      aspect-ratio: 1;
+      place-items: center;
+      margin: 20px 0 0 auto;
+      border: 0;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd66c, #f28a28);
+      box-shadow: 0 7px 18px rgb(171 97 18 / 30%);
+      cursor: pointer;
+      font-size: 1.4rem;
+    }
+
+    .kittens-photo {
+      display: block;
+      width: min(100%, 420px);
+      max-height: 58svh;
+      margin: 26px auto 0;
+      border: 6px solid #fff2d8;
+      border-radius: 22px;
+      box-shadow: 0 20px 55px rgb(0 0 0 / 35%);
+      object-fit: cover;
+    }
+
+    .final-title { margin: 6px 0 0; font-family: "DM Sans", sans-serif; font-size: clamp(2.8rem, 14vw, 5rem); font-weight: 700; line-height: .98; text-align: center; }
+    .final-name { margin: 12px 0 10px; color: var(--gold); font-family: "Caveat", cursive; font-size: clamp(3rem, 13vw, 4.7rem); line-height: 1.05; text-align: center; }
+    .cat-gift { position: relative; display: grid; width: min(72vw, 280px); min-height: 240px; margin: 16px auto; place-items: center; }
+    .cat-gift .cat { font-size: clamp(8rem, 40vw, 12rem); filter: drop-shadow(0 15px 20px rgb(0 0 0 / 27%)); animation: bob 3s ease-in-out infinite; }
+    .cat-gift .bouquet { position: absolute; right: 2%; bottom: 24px; font-size: clamp(2.5rem, 11vw, 4rem); transform: rotate(-17deg); }
+    .made-with { margin: 16px 0 0; color: #f0dcca; font-size: 1rem; text-align: center; }
+    .made-with strong { color: var(--gold); }
+
+    @keyframes arrive { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes reveal-word { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+    @keyframes flicker { from { scale: .93; filter: brightness(.95); } to { scale: 1.08; filter: brightness(1.16); } }
+
+    @media (min-width: 620px) {
+      .app { padding-top: 40px; padding-bottom: 40px; }
+      .balloon-field { min-height: 365px; }
+      .wishes { gap: 14px; }
+      .wish { padding: 16px 20px 17px; }
+      .wish-copy { font-size: 1.08rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+      .letter-copy.animate-words .letter-word { animation-delay: 0ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="birthday-music" src="birthday-music.mp3" preload="none" loop></audio>
+  <button class="music-toggle" id="music-toggle" type="button" aria-label="Play birthday music" aria-pressed="false" title="Play birthday music">
+    <span class="music-icon" id="music-icon" aria-hidden="true">♪</span>
+    <span id="music-label">Play music</span>
+  </button>
+  <main class="app" aria-live="polite">
+    <section class="scene active" id="scene-cake" aria-labelledby="cake-title">
+      <p class="eyebrow">A little celebration, just for you</p>
+      <h1 id="cake-title">First things first <span aria-hidden="true">🎂</span></h1>
+      <button class="cake-button" type="button" data-next="balloons" aria-label="Continue to the birthday balloons">
+        <span class="cake" aria-hidden="true">
+          <span class="candle"><span class="flame"></span></span>
+          <span class="cake-layer"></span>
+          <span class="cake-caption">Happy Birthday, Rashhh!</span>
+        </span>
+      </button>
+      <p class="tap-hint">Tap anywhere to continue</p>
+    </section>
+
+    <section class="scene" id="scene-balloons" aria-labelledby="balloon-title">
+      <h2 id="balloon-title">Pop the balloons <span aria-hidden="true">🎈</span></h2>
+      <p class="subhead balloon-instructions">Five balloons. Five little reasons you are loved. Pop them all.</p>
+      <div class="balloon-field" aria-label="Five birthday balloons">
+        <button class="balloon" type="button" aria-label="Pop balloon 1" data-balloon="0"></button>
+        <button class="balloon" type="button" aria-label="Pop balloon 2" data-balloon="1"></button>
+        <button class="balloon" type="button" aria-label="Pop balloon 3" data-balloon="2"></button>
+        <button class="balloon" type="button" aria-label="Pop balloon 4" data-balloon="3"></button>
+        <button class="balloon" type="button" aria-label="Pop balloon 5" data-balloon="4"></button>
+      </div>
+      <ol class="wishes" id="wishes" aria-live="polite"></ol>
+      <p class="progress" id="progress">0 of 5 balloons popped</p>
+      <button class="primary-button" id="photo-next" type="button" hidden>Keep going <span aria-hidden="true">💛</span></button>
+    </section>
+
+    <section class="scene" id="scene-photo" aria-labelledby="photo-title">
+      <p class="eyebrow">A little moment worth keeping</p>
+      <h2 id="photo-title">My favorite Rashhh <span aria-hidden="true">✨</span></h2>
+      <p class="subhead">One photo, a thousand happy memories.</p>
+      <figure class="photo-frame">
+        <img src="rash.jpeg.jpeg" alt="Rashhh smiling in a light blue outfit">
+        <figcaption class="photo-caption">Happy birthday, Rashhh</figcaption>
+      </figure>
+      <button class="primary-button" type="button" data-next="envelope">Keep going <span aria-hidden="true">✨</span></button>
+    </section>
+
+    <section class="scene" id="scene-envelope" aria-labelledby="envelope-title">
+      <p class="eyebrow">Just one last thing</p>
+      <h2 id="envelope-title">Rashhh, I wrote you a letter.</h2>
+      <p class="subhead">There's something I want you to know.</p>
+      <button class="envelope" id="open-envelope" type="button" aria-label="Open your letter">
+        <span class="seal" aria-hidden="true">S</span>
+      </button>
+      <p class="tap-hint">Tap to open your letter <span aria-hidden="true">👇</span></p>
+    </section>
+
+    <section class="scene" id="scene-letter" aria-labelledby="letter-title">
+      <article class="letter">
+        <h2 id="letter-title">Dear Rashhh,</h2>
+        <div class="letter-rule" aria-hidden="true"></div>
+        <p class="letter-copy">I just wish to see you happy always. ❤️🥹 You deserve all the beautiful things this world has to offer, and I hope life brings you nothing but happiness, success, and peace. May you always be surrounded by good people who genuinely care for you and bring out the best in you. Never lose that beautiful smile of yours, because your happiness means a lot to me azhagi🫶🏻❤️✨</p>
+        <p class="letter-signoff">With all my love,<br>— Surya</p>
+        <button class="cake-seal" type="button" data-next="kittens" aria-label="Continue to your birthday surprise">🎂</button>
+      </article>
+      <button class="primary-button" type="button" data-next="kittens">Continue <span aria-hidden="true">💛</span></button>
+    </section>
+
+    <section class="scene" id="scene-kittens" aria-labelledby="kittens-title">
+      <p class="eyebrow">A special delivery is here</p>
+      <h2 id="kittens-title">A birthday parade for you <span aria-hidden="true">🐾</span></h2>
+      <p class="subhead">The tiniest guests brought the biggest cake.</p>
+      <img class="kittens-photo" src="kittens-birthday.jpeg" alt="A group of kittens gathered by an open little door, bringing a birthday cake">
+      <button class="primary-button" type="button" data-next="final">One more surprise <span aria-hidden="true">🎁</span></button>
+    </section>
+
+    <section class="scene" id="scene-final" aria-labelledby="final-title">
+      <p class="eyebrow">Today is all about you</p>
+      <h1 class="final-title" id="final-title">HAPPY<br>BIRTHDAY</h1>
+      <p class="final-name">Rashh!</p>
+      <div class="cat-gift" aria-label="A birthday cat with flowers">
+        <span class="cat" aria-hidden="true">🐱</span>
+        <span class="bouquet" aria-hidden="true">💐</span>
+      </div>
+      <p class="made-with">Made with love, just for you — <strong>Surya 💛</strong></p>
+      <button class="primary-button" id="replay" type="button">Celebrate again <span aria-hidden="true">🎂</span></button>
+    </section>
+  </main>
+
+  <script>
+    const reasons = [
+      "your happiness is my wish ✨️",
+      "Be happy forever,u deserve all good things!😊",
+      "you are lucky sister,my bestfriend💎🫶",
+      "your laugh is my happiness😁",
+      "If happiness had a sound ,it would be ur laugh🤣😅"
+    ];
+    const colors = ["#ff7caa", "#ffbd51", "#b58af4", "#55d7c5", "#ff795f"];
+    const popped = new Set();
+    const wishes = document.querySelector("#wishes");
+    const progress = document.querySelector("#progress");
+    const photoNext = document.querySelector("#photo-next");
+    const music = document.querySelector("#birthday-music");
+    const musicToggle = document.querySelector("#music-toggle");
+    const musicIcon = document.querySelector("#music-icon");
+    const musicLabel = document.querySelector("#music-label");
+    const letterCopy = document.querySelector(".letter-copy");
+    const letterMessage = letterCopy.textContent;
+    const letterParts = letterMessage.split(/(\s+)/);
+    let wordIndex = 0;
+
+    letterCopy.setAttribute("aria-label", letterMessage);
+    letterCopy.replaceChildren(...letterParts.map((part) => {
+      if (/^\s+$/.test(part)) return document.createTextNode(part);
+      const word = document.createElement("span");
+      word.className = "letter-word";
+      word.setAttribute("aria-hidden", "true");
+      word.style.setProperty("--word-delay", `${wordIndex * 55}ms`);
+      word.textContent = part;
+      wordIndex += 1;
+      return word;
+    }));
+
+    function updateMusicToggle() {
+      const isPlaying = !music.paused;
+      musicIcon.textContent = isPlaying ? "♫" : "♪";
+      musicLabel.textContent = isPlaying ? "Pause music" : "Play music";
+      musicToggle.setAttribute("aria-label", isPlaying ? "Pause birthday music" : "Play birthday music");
+      musicToggle.setAttribute("aria-pressed", String(isPlaying));
+      musicToggle.title = isPlaying ? "Pause birthday music" : "Play birthday music";
+    }
+
+    music.addEventListener("play", updateMusicToggle);
+    music.addEventListener("pause", updateMusicToggle);
+
+    musicToggle.addEventListener("click", async () => {
+      if (music.paused) {
+        try {
+          await music.play();
+        } catch {
+          updateMusicToggle();
+        }
+      } else {
+        music.pause();
+      }
+    });
+
+    function showScene(name) {
+      document.querySelectorAll(".scene").forEach((scene) => {
+        scene.classList.toggle("active", scene.id === `scene-${name}`);
+      });
+      if (name === "letter") {
+        letterCopy.classList.remove("animate-words");
+        void letterCopy.offsetWidth;
+        letterCopy.classList.add("animate-words");
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll("[data-next]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.dataset.next === "balloons") music.play().catch(() => {});
+        showScene(button.dataset.next);
+      });
+    });
+
+    document.querySelectorAll("[data-balloon]").forEach((balloon) => {
+      balloon.addEventListener("click", () => {
+        const index = Number(balloon.dataset.balloon);
+        if (popped.has(index)) return;
+        popped.add(index);
+        balloon.classList.add("popped");
+        balloon.setAttribute("aria-pressed", "true");
+
+        const wish = document.createElement("li");
+        wish.className = "wish";
+        wish.style.setProperty("--wish-color", colors[index]);
+        wish.innerHTML = `<span class="wish-label">Reason no. ${index + 1} 💝</span><p class="wish-copy"></p>`;
+        wish.querySelector(".wish-copy").textContent = reasons[index];
+        wishes.append(wish);
+        progress.textContent = `${popped.size} of 5 balloons popped`;
+
+        if (popped.size === reasons.length) {
+          photoNext.hidden = false;
+          photoNext.addEventListener("click", () => showScene("photo"), { once: true });
+        }
+      });
+    });
+
+    document.querySelector("#open-envelope").addEventListener("click", (event) => {
+      event.currentTarget.classList.add("open");
+      window.setTimeout(() => showScene("letter"), 480);
+    });
+
+    document.querySelector("#replay").addEventListener("click", () => {
+      popped.clear();
+      wishes.replaceChildren();
+      progress.textContent = "0 of 5 balloons popped";
+      photoNext.hidden = true;
+      document.querySelectorAll(".balloon").forEach((balloon) => {
+        balloon.classList.remove("popped");
+        balloon.removeAttribute("aria-pressed");
+      });
+      document.querySelector("#open-envelope").classList.remove("open");
+      showScene("cake");
+    });
+  </script>
+</body>
+</html>
